@@ -18,7 +18,7 @@ class APP_Updater {
 
 			self::$themes['current_theme'] = $themes['current_theme'];
 
-			foreach ( array( 'qualitycontrol', 'classipress', 'clipper', 'jobroller' ) as $name ) {
+			foreach ( array( 'vantage', 'qualitycontrol', 'classipress', 'clipper', 'jobroller' ) as $name ) {
 				if ( !isset( $themes[ $name ] ) )
 					continue;
 
