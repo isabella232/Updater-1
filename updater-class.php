@@ -7,9 +7,17 @@ class APP_Upgrader {
 	private static $themes;
 
 	function init() {
+		add_action( 'init', array( __CLASS__, 'disable_old_updater' ) );
+
 		add_filter( 'http_request_args', array( __CLASS__, 'exclude_themes' ), 10, 2 );
 		add_filter( 'http_response', array( __CLASS__, 'check_updates' ), 10, 3 );
 		add_action( 'all_admin_notices', array( __CLASS__, 'display_warning' ) );
+	}
+
+	function disable_old_updater() {
+		remove_filter( 'http_request_args', array( 'APP_Updater', 'exclude_themes' ), 10, 2 );
+		remove_filter( 'http_response', array( 'APP_Updater', 'check_updates' ), 10, 3 );
+		remove_action( 'all_admin_notices', array( 'APP_Updater', 'display_warning' ) );
 	}
 
 	function exclude_themes( $r, $url ) {
