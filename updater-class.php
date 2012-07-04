@@ -1,6 +1,6 @@
 <?php
 
-class APP_Updater {
+class APP_Upgrader {
 	const WP_URL = 'http://api.wordpress.org/themes/update-check/';
 	const APP_URL = 'http://api.appthemes.com/themes/update-check/1.0/';
 
