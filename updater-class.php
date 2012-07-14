@@ -62,7 +62,7 @@ class APP_Upgrader {
 			if ( $our_updates ) {
 				$response['body'] = serialize( array_merge(
 					unserialize( $response['body'] ),
-					unserialize( $our_updates )
+					$our_updates
 				) );
 			}
 		}
@@ -78,12 +78,18 @@ class APP_Upgrader {
 
 		$raw_response = wp_remote_post( self::APP_URL, $args );
 
-		/* debug_k($raw_response); */
-
 		if ( is_wp_error( $raw_response ) || 200 != wp_remote_retrieve_response_code( $raw_response ) )
 			return false;
 
-		return wp_remote_retrieve_body( $raw_response );
+		$body = unserialize( wp_remote_retrieve_body( $raw_response ) );
+		if ( !$body )
+			return false;
+
+		foreach ( $body as &$theme ) {
+			$theme['package'] = add_query_arg( 'api_key', self::get_key(), $theme['package'] );
+		}
+
+		return $body;
 	}
 
 	function display_warning() {
