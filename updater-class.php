@@ -6,6 +6,17 @@ class APP_Upgrader {
 
 	private static $themes;
 
+	function get_key() {
+		if ( defined( 'APPTHEMES_API_KEY' ) )
+			return APPTHEMES_API_KEY;
+
+		return get_site_option( 'appthemes_api_key' );
+	}
+
+	function set_key( $key ) {
+		update_site_option( 'appthemes_api_key', $key );
+	}
+
 	function init() {
 		add_action( 'init', array( __CLASS__, 'disable_old_updater' ) );
 
