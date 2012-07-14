@@ -18,6 +18,9 @@ class APP_Upgrader {
 	}
 
 	function init() {
+		if ( !self::get_key() )
+			return;
+
 		add_action( 'init', array( __CLASS__, 'disable_old_updater' ) );
 
 		add_filter( 'http_request_args', array( __CLASS__, 'exclude_themes' ), 10, 2 );
