@@ -2,7 +2,7 @@
 
 class APP_Upgrader {
 	const WP_URL = 'http://api.wordpress.org/themes/update-check/';
-	const APP_URL = 'http://api.appthemes.com/themes/update-check/1.0/';
+	const APP_URL = 'http://api.appthemes.com/themes/update-check/2.0/';
 
 	private static $themes;
 
@@ -24,13 +24,13 @@ class APP_Upgrader {
 		add_action( 'init', array( __CLASS__, 'disable_old_updater' ) );
 
 		add_filter( 'http_request_args', array( __CLASS__, 'exclude_themes' ), 10, 2 );
-		add_filter( 'http_response', array( __CLASS__, 'check_updates' ), 10, 3 );
+		add_filter( 'http_response', array( __CLASS__, 'alter_update_requests' ), 10, 3 );
 		add_action( 'all_admin_notices', array( __CLASS__, 'display_warning' ) );
 	}
 
 	function disable_old_updater() {
 		remove_filter( 'http_request_args', array( 'APP_Updater', 'exclude_themes' ), 10, 2 );
-		remove_filter( 'http_response', array( 'APP_Updater', 'check_updates' ), 10, 3 );
+		remove_filter( 'http_response', array( 'APP_Updater', 'alter_update_requests' ), 10, 3 );
 		remove_action( 'all_admin_notices', array( 'APP_Updater', 'display_warning' ) );
 	}
 
@@ -54,21 +54,36 @@ class APP_Upgrader {
 		return $r;
 	}
 
-	function check_updates( $response, $args, $url ) {
+	function alter_update_requests( $response, $args, $url ) {
 		if ( 0 === strpos( $url, self::WP_URL ) ) {
-			$args['body'] = array( 'themes' => serialize( self::$themes ) );
-			$raw_response = wp_remote_post( self::APP_URL, $args );
 
-			if ( is_wp_error( $raw_response ) || 200 != wp_remote_retrieve_response_code( $raw_response ) )
-				return $response;
+			$our_updates = self::check_for_updates( $args );
 
-			$response['body'] = serialize( array_merge(
-				unserialize( $response['body'] ),
-				unserialize( wp_remote_retrieve_body( $raw_response ) )
-			) );
+			if ( $our_updates ) {
+				$response['body'] = serialize( array_merge(
+					unserialize( $response['body'] ),
+					unserialize( $our_updates )
+				) );
+			}
 		}
 
 		return $response;
+	}
+
+	protected function check_for_updates( $args ) {
+		$args['body'] = array(
+			'themes' => self::$themes,
+			'api_key' => self::get_key()
+		);
+
+		$raw_response = wp_remote_post( self::APP_URL, $args );
+
+		/* debug_k($raw_response); */
+
+		if ( is_wp_error( $raw_response ) || 200 != wp_remote_retrieve_response_code( $raw_response ) )
+			return false;
+
+		return wp_remote_retrieve_body( $raw_response );
 	}
 
 	function display_warning() {
