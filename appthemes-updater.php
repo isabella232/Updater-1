@@ -11,6 +11,7 @@ if ( is_admin() ) {
 	require dirname( __FILE__ ) . '/updater-class.php';
 	require dirname( __FILE__ ) . '/updater-ui.php';
 
-	APP_Upgrader::init();
+	new APP_Theme_Upgrader;
 	APP_Upgrader_UI::init();
 }
+
