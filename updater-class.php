@@ -1,6 +1,7 @@
 <?php
 
 abstract class APP_Upgrader {
+
 	protected $wp_url;
 	protected $app_url;
 
@@ -35,22 +36,30 @@ abstract class APP_Upgrader {
 
 	abstract function exclude_items( $r, $url );
 
-	abstract protected function check_for_updates( $args );
+	abstract function get_payload();
 
-	function alter_update_requests( $response, $args, $url ) {
-		if ( 0 === strpos( $url, $this->wp_url ) ) {
+	abstract function alter_update_requests( $response, $args, $url );
 
-			$our_updates = $this->check_for_updates( $args );
+	protected function check_for_updates( $args ) {
+		if ( empty( $this->items ) )
+			return false;
 
-			if ( $our_updates ) {
-				$response['body'] = serialize( array_merge(
-					unserialize( $response['body'] ),
-					$our_updates
-				) );
-			}
-		}
+		$payload = $this->get_payload();
 
-		return $response;
+		$args['body'] = array_merge( $payload, array(
+			'api_key' => APP_Upgrader::get_key()
+		) );
+
+		$raw_response = wp_remote_post( $this->app_url, $args );
+
+		if ( is_wp_error( $raw_response ) || 200 != wp_remote_retrieve_response_code( $raw_response ) )
+			return false;
+
+		$body = unserialize( wp_remote_retrieve_body( $raw_response ) );
+		if ( !$body )
+			return false;
+
+		return $this->append_api_key( $body );
 	}
 
 	protected function append_api_key( $items ) {
@@ -68,7 +77,9 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 	protected $wp_url = 'http://api.wordpress.org/themes/update-check/';
 	protected $app_url = 'http://api.appthemes.com/themes/update-check/2.0/';
 
-	protected $items;
+	protected function get_hardcoded_items() {
+		return array( 'vantage', 'qualitycontrol', 'classipress', 'clipper', 'jobroller' );
+	}
 
 	public static $instance;
 
@@ -84,9 +95,9 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 		if ( 0 === strpos( $url, $this->wp_url ) ) {
 			$themes = unserialize( $r['body']['themes'] );
 
-			$this->items['current_theme'] = $themes['current_theme'];
+			$this->current_theme = $themes['current_theme'];
 
-			foreach ( array( 'vantage', 'qualitycontrol', 'classipress', 'clipper', 'jobroller' ) as $name ) {
+			foreach ( $this->get_hardcoded_items() as $name ) {
 				if ( !isset( $themes[ $name ] ) )
 					continue;
 
@@ -100,28 +111,27 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 		return $r;
 	}
 
-	protected function check_for_updates( $args ) {
-		if ( empty( $this->items ) )
-			return false;
-
-		$args['body'] = array(
+	function get_payload() {
+		return array(
 			'themes' => $this->items,
-			'api_key' => APP_Upgrader::get_key()
+			'current_theme' => $this->current_theme
 		);
+	}
 
-		$raw_response = wp_remote_post( $this->app_url, $args );
+	function alter_update_requests( $response, $args, $url ) {
+		if ( 0 === strpos( $url, $this->wp_url ) ) {
 
-		// DEBUG
-		/* debug_k($raw_response); */
+			$our_updates = $this->check_for_updates( $args );
 
-		if ( is_wp_error( $raw_response ) || 200 != wp_remote_retrieve_response_code( $raw_response ) )
-			return false;
+			if ( $our_updates ) {
+				$response['body'] = serialize( array_merge(
+					unserialize( $response['body'] ),
+					$our_updates
+				) );
+			}
+		}
 
-		$body = unserialize( wp_remote_retrieve_body( $raw_response ) );
-		if ( !$body )
-			return false;
-
-		return parent::append_api_key( $body );
+		return $response;
 	}
 
 	function display_warning() {
@@ -144,6 +154,76 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 				</div>
 <?php
 		}
+	}
+}
+
+
+class APP_Plugin_Upgrader extends APP_Upgrader {
+
+	protected $wp_url = 'http://api.wordpress.org/plugins/update-check/';
+	protected $app_url = 'http://api.appthemes.com/plugins/update-check/1.0/';
+
+	public static $instance;
+
+	public function __construct() {
+		parent::__construct();
+
+		add_filter( 'extra_plugin_headers', array( __CLASS__, 'extra_plugin_headers' ) );
+
+		self::$instance = $this;
+	}
+
+	static function extra_plugin_headers( $headers ) {
+		$headers['AppThemes ID'] = 'AppThemes ID';
+
+		return $headers;
+	}
+
+	function exclude_items( $r, $url ) {
+		if ( 0 === strpos( $url, $this->wp_url ) ) {
+			$payload = unserialize( $r['body']['plugins'] );
+
+			if ( !$payload )
+				return;
+
+			foreach ( $payload->plugins as $slug => $info ) {
+				if ( '' == $info['AppThemes ID'] )
+					continue;
+
+				$this->items[ $slug ] = $info;
+
+				unset( $payload->plugins[ $slug ] );
+			}
+
+			$r['body']['plugins'] = serialize( $payload );
+		}
+
+		return $r;
+	}
+
+	function alter_update_requests( $response, $args, $url ) {
+		if ( 0 === strpos( $url, $this->wp_url ) ) {
+
+			$our_updates = $this->check_for_updates( $args );
+
+			$payload = unserialize( $response['body'] );
+
+			if ( $our_updates ) {
+				foreach ( $our_updates as $key => $value ) {
+					$payload[ $key ] = (object) $value;
+				}
+
+				$response['body'] = serialize( $payload );
+			}
+		}
+
+		return $response;
+	}
+
+	function get_payload() {
+		return array(
+			'plugins' => $this->items,
+		);
 	}
 }
 
