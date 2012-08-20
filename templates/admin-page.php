@@ -4,7 +4,7 @@
 
 <p><?php printf(
 	__( 'Copy the key found at %1$s and paste it in the field below:', 'at-updater' ),
-	'<a href="http://www.appthemes.com/api-key/">www.appthemes.com/api-key/</a>'
+	'<a href="http://www.appthemes.com/api-key/" target="_blank">www.appthemes.com/api-key/</a>'
 ); ?></p>
 
 <p>
