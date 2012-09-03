@@ -6,6 +6,7 @@ Version: 1.1
 Author: AppThemes
 Author URI: http://appthemes.com
 AppThemes ID: appthemes-updater
+Network: true
 */
 
 function is_app_updater_network_activated() {
