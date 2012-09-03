@@ -17,6 +17,12 @@ function is_app_updater_network_activated() {
 	return isset( $plugins[ plugin_basename( __FILE__ ) ] );
 }
 
+function app_updater_activate() {
+	// Delete caches, so that a new check is performed
+	delete_site_transient( 'update_themes' );
+	delete_site_transient( 'update_plugins' );
+}
+
 if ( is_admin() ) {
 	require dirname( __FILE__ ) . '/updater-class.php';
 	require dirname( __FILE__ ) . '/updater-ui.php';
@@ -28,5 +34,7 @@ if ( is_admin() ) {
 		$app_updater = new APP_Upgrader_Network;
 	else
 		$app_updater = new APP_Upgrader_Regular;
+
+	register_activation_hook( __FILE__, 'app_updater_activate' );
 }
 
