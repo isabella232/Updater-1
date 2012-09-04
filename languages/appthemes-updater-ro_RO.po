@@ -1,0 +1,67 @@
+# Copyright (C) 2012 AppThemes Updater
+# This file is distributed under the same license as the AppThemes Updater package.
+msgid ""
+msgstr ""
+"Project-Id-Version: AppThemes Updater\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/appthemes-updater\n"
+"POT-Creation-Date: 2012-09-04 11:18:10+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2012-09-04 14:22+0200\n"
+"Last-Translator: scribu <mail@scribu.net>\n"
+"Language-Team: ROMANIA <scribu@appthemes.com>\n"
+"X-Poedit-Language: Romanian\n"
+
+#: templates/admin-page.php:3
+msgid "AppThemes API Key"
+msgstr "AppThemes API Key"
+
+#: templates/admin-page.php:6
+msgid "Copy the key found at %1$s and paste it in the field below:"
+msgstr "Copiază cheia găsită la %1$s și introdu-o în câmpul de mai jos:"
+
+#: templates/admin-page.php:15
+msgid "Save"
+msgstr "Salvează"
+
+#: updater-class.php:153
+msgid "<strong>IMPORTANT</strong>: If you have made any modifications to the AppThemes files, they will be overwritten if you proceed with the automatic update. Those with modified theme files should do a manual update instead. Visit your <a href=\"%1$s\" target=\"_blank\">customer dashboard</a> to download the latest version."
+msgstr ""
+
+#: updater-ui.php:17
+msgid "The AppThemes Updater is almost ready."
+msgstr "AppThemes Updater este aproape gata."
+
+#: updater-ui.php:19
+msgid "You must <a href=\"%1$s\">enter your AppThemes API key</a> for it to work."
+msgstr "Trebuie să-ți introduci <a href=\"%1$s\">cheia pentru AppThemes API</a> ca să funcționeze."
+
+#: updater-ui.php:31
+msgid "Saved Changes."
+msgstr "Schimbările au fost salvate."
+
+#: updater-ui.php:59
+#: updater-ui.php:87
+msgid "AppThemes Updater Configuration"
+msgstr "Configurație AppThemes Updater"
+
+#. #-#-#-#-#  appthemes-updater.pot (AppThemes Updater 1.1)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: updater-ui.php:60
+#: updater-ui.php:88
+msgid "AppThemes Updater"
+msgstr "AppThemes Updater"
+
+#. Description of the plugin/theme
+msgid "Allows customers to automatically update AppThemes Products."
+msgstr "Permite clienților să actualizeze automat produsele AppThemes."
+
+#. Author of the plugin/theme
+msgid "AppThemes"
+msgstr "AppThemes"
+
+#. Author URI of the plugin/theme
+msgid "http://appthemes.com"
+msgstr "http://appthemes.com"
+

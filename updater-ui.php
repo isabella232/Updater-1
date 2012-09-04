@@ -56,8 +56,8 @@ class APP_Upgrader_Regular extends APP_Upgrader_UI {
 	function init_page() {
 		add_submenu_page(
 			'plugins.php',
-			__( 'AppThemes Updater Configuration', 'at-updater' ),
-			__( 'AppThemes Updater', 'at-updater' ),
+			__( 'AppThemes Updater Configuration', 'appthemes-updater' ),
+			__( 'AppThemes Updater', 'appthemes-updater' ),
 			'manage_options',
 			'appthemes-key-config',
 			array( $this, 'render_page' )
@@ -84,8 +84,8 @@ class APP_Upgrader_Network extends APP_Upgrader_UI {
 	function init_page() {
 		add_submenu_page(
 			'settings.php',
-			__( 'AppThemes Updater Configuration', 'at-updater' ),
-			__( 'AppThemes Updater', 'at-updater' ),
+			__( 'AppThemes Updater Configuration', 'appthemes-updater' ),
+			__( 'AppThemes Updater', 'appthemes-updater' ),
 			'manage_options',
 			'appthemes-key-config',
 			array( $this, 'render_page' )

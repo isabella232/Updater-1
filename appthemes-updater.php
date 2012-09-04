@@ -2,11 +2,13 @@
 /*
 Plugin Name: AppThemes Updater
 Description: Allows customers to automatically update AppThemes Products.
-Version: 1.1
+Version: 1.1.1-alpha
 Author: AppThemes
 Author URI: http://appthemes.com
 AppThemes ID: appthemes-updater
 Network: true
+Text Domain: appthemes-updater
+Domain Path: /languages
 */
 
 function is_app_updater_network_activated() {
@@ -25,6 +27,8 @@ function app_updater_activate() {
 }
 
 if ( is_admin() ) {
+	load_plugin_textdomain( 'appthemes-updater', '', basename( dirname( __FILE__ ) ) . '/languages' );
+
 	require dirname( __FILE__ ) . '/updater-class.php';
 	require dirname( __FILE__ ) . '/updater-ui.php';
 
