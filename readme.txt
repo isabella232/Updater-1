@@ -15,8 +15,11 @@ from AppThemes.
 
 == Changelog ==
 
-= 1.1.2 =
+= 1.1.3 =
 * added "Check for updates now" button
+
+= 1.1.2 =
+* check for updates each time wp-admin/update-core.php is accessed
 
 = 1.1.1 =
 * fixed error when accessing API on new infrastructure
