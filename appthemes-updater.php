@@ -8,8 +8,10 @@ Author URI: http://appthemes.com
 AppThemes ID: appthemes-updater
 Network: true
 Text Domain: appthemes-updater
-Domain Path: /languages
 */
+
+$locale = apply_filters( 'plugin_locale', get_locale(), 'appthemes-updater' );
+load_textdomain( 'appthemes-updater', WP_LANG_DIR . "/plugins/appthemes-updater-$locale.mo" );
 
 function is_app_updater_network_activated() {
 	if ( !is_multisite() )
