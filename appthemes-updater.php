@@ -21,9 +21,18 @@ function is_app_updater_network_activated() {
 }
 
 function app_updater_activate() {
-	// Delete caches, so that a new check is performed
+	app_refresh_themes();
+	app_refresh_plugins();
+}
+
+function app_refresh_themes() {
 	delete_site_transient( 'update_themes' );
+	wp_update_themes();
+}
+
+function app_refresh_plugins() {
 	delete_site_transient( 'update_plugins' );
+	wp_update_plugins();
 }
 
 if ( is_admin() ) {
@@ -40,6 +49,7 @@ if ( is_admin() ) {
 	else
 		$app_updater = new APP_Upgrader_Regular;
 
+	add_action( 'load-update-core.php', 'app_updater_activate' );
 	register_activation_hook( __FILE__, 'app_updater_activate' );
 }
 
