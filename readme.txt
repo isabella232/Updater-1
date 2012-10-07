@@ -15,6 +15,9 @@ from AppThemes.
 
 == Changelog ==
 
+= 1.1.2 =
+* check for updates each time wp-admin/update-core.php is accessed
+
 = 1.1.1 =
 * fixed error when accessing API on new infrastructure
 * fixed confusing notice when inserting API key
