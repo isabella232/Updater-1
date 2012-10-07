@@ -15,6 +15,10 @@ from AppThemes.
 
 == Changelog ==
 
+= 1.1.1 =
+* fixed error when accessing API on new infrastructure
+* fixed confusing notice when inserting API key
+
 = 1.1 =
 * check for updates on activation
 * better support for multisite
