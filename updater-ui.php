@@ -27,13 +27,9 @@ abstract class APP_Upgrader_UI {
 		if ( !$this->can_set_key() )
 			return;
 
-		echo "<div id='app-updater-warning' class='updated fade'><p>"
-			. "<strong>" . __( 'The AppThemes Updater is almost ready.', 'app-updater' ) . "</strong> "
-			. sprintf(
-				__( 'You must <a href="%1$s">enter your AppThemes API key</a> for it to work.', 'app-updater' ),
-				$this->get_admin_url()
-			)
-			. "</p></div>";
+		$admin_url = $this->get_admin_url();
+
+		include dirname(__FILE__) . '/templates/notice.php';
 	}
 
 	function render_page() {
