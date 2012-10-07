@@ -27,13 +27,22 @@ abstract class APP_Upgrader_UI {
 		if ( !$this->can_set_key() )
 			return;
 
-		$admin_url = $this->get_admin_url();
-
-		include dirname(__FILE__) . '/templates/notice.php';
+		self::render( 'notice.php', array(
+			'admin_url' => $this->get_admin_url()
+		) );
 	}
 
 	function render_page() {
-		include dirname(__FILE__) . '/templates/admin-page.php';
+		self::render( 'admin-page.php' );
+
+		if ( APP_Upgrader::get_key() )
+			self::render( 'check-for-updates.php' );
+	}
+
+	private static function render( $path, $vars = array() ) {
+		extract( $vars );
+
+		include dirname(__FILE__) . "/templates/$path";
 	}
 }
 
