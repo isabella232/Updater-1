@@ -9,9 +9,7 @@
 
 <p>
 <input type="text" class="regular-text" name="appthemes_key" value="<?php echo esc_attr( APP_Upgrader::get_key() ); ?>" />
-</p>
 
-<p>
 <input type="submit" class="button-primary" name="appthemes_submit" value="<?php esc_attr_e( 'Save', 'appthemes-updater' ); ?>" />
 </p>
 
