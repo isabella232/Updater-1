@@ -40,11 +40,12 @@ abstract class APP_Upgrader {
 
 	abstract function alter_update_requests( $response, $args, $url );
 
-	protected function check_for_updates( $args ) {
-		if ( empty( $this->items ) )
+	protected function check_for_updates() {
+		$payload = $this->get_payload();
+		if ( !$payload )
 			return false;
 
-		$payload = $this->get_payload();
+		$args = array();
 
 		$args['body'] = array_merge( $payload, array(
 			'api_key' => APP_Upgrader::get_key()
@@ -112,6 +113,9 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 	}
 
 	function get_payload() {
+		if ( empty( $this->items ) )
+			return false;
+
 		return array(
 			'themes' => $this->items,
 			'current_theme' => $this->current_theme
@@ -121,7 +125,7 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 	function alter_update_requests( $response, $args, $url ) {
 		if ( 0 === strpos( $url, $this->wp_url ) ) {
 
-			$our_updates = $this->check_for_updates( $args );
+			$our_updates = $this->check_for_updates();
 
 			if ( $our_updates ) {
 				$response['body'] = serialize( array_merge(
@@ -204,7 +208,7 @@ class APP_Plugin_Upgrader extends APP_Upgrader {
 	function alter_update_requests( $response, $args, $url ) {
 		if ( 0 === strpos( $url, $this->wp_url ) ) {
 
-			$our_updates = $this->check_for_updates( $args );
+			$our_updates = $this->check_for_updates();
 
 			$payload = unserialize( $response['body'] );
 
