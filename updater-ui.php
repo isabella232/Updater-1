@@ -27,7 +27,7 @@ abstract class APP_Upgrader_UI {
 		if ( !$this->can_set_key() )
 			return;
 
-		self::render( 'notice.php', array(
+		self::render( 'api-key-notice.php', array(
 			'admin_url' => $this->get_admin_url()
 		) );
 	}

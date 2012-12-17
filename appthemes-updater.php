@@ -40,10 +40,7 @@ function app_extra_headers( $headers ) {
 	return $headers;
 }
 
-if ( is_admin() ) {
-	add_filter( 'extra_plugin_headers', 'app_extra_headers' );
-	add_filter( 'extra_theme_headers', 'app_extra_headers' );
-
+function app_updater_init() {
 	$locale = apply_filters( 'plugin_locale', get_locale(), 'appthemes-updater' );
 	load_textdomain( 'appthemes-updater', WP_LANG_DIR . "/plugins/appthemes-updater-$locale.mo" );
 
@@ -57,6 +54,13 @@ if ( is_admin() ) {
 		$app_updater = new APP_Upgrader_Network;
 	else
 		$app_updater = new APP_Upgrader_Regular;
+}
+
+if ( is_admin() ) {
+	app_updater_init();
+
+	add_filter( 'extra_plugin_headers', 'app_extra_headers' );
+	add_filter( 'extra_theme_headers', 'app_extra_headers' );
 
 	add_action( 'load-update-core.php', 'app_updater_activate' );
 	register_activation_hook( __FILE__, 'app_updater_activate' );
