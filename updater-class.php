@@ -98,11 +98,19 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 
 			$this->current_theme = $themes['current_theme'];
 
-			foreach ( $this->get_hardcoded_items() as $name ) {
-				if ( !isset( $themes[ $name ] ) )
+			$themes_to_check = $this->get_marked_themes();
+
+			foreach ( $themes as $name => $info ) {
+				if ( is_string( $info ) )
 					continue;
 
-				$this->items[ $name ] = $themes[ $name ];
+				if ( !array_key_exists( $name, $themes_to_check ) )
+					continue;
+
+				$info['AppThemes ID'] = $themes_to_check[ $name ];
+
+				$this->items[ $name ] = $info;
+
 				unset( $themes[ $name ] );
 			}
 
@@ -110,6 +118,30 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 		}
 
 		return $r;
+	}
+
+	/**
+	 * Get themes that have the 'AppThemes ID' header,
+	 * since it's not passed to the updater request.
+	 *
+	 * @return array( 'theme-slug' => 'AppThemes ID-slug' )
+	 */
+	protected function get_marked_themes() {
+		if ( !function_exists( 'wp_get_themes' ) )
+			return array();
+
+		$hardcoded = $this->get_hardcoded_items();
+
+		$marked = array();
+
+		foreach ( wp_get_themes() as $key => $theme ) {
+			if ( in_array( $key, $hardcoded ) )
+				$marked[ $key ] = $key;
+			elseif ( $theme->get( 'AppThemes ID' ) )
+				$marked[ $key ] = $theme->get( 'AppThemes ID' );
+		}
+
+		return $marked;
 	}
 
 	function get_payload() {
@@ -172,15 +204,7 @@ class APP_Plugin_Upgrader extends APP_Upgrader {
 	public function __construct() {
 		parent::__construct();
 
-		add_filter( 'extra_plugin_headers', array( __CLASS__, 'extra_plugin_headers' ) );
-
 		self::$instance = $this;
-	}
-
-	static function extra_plugin_headers( $headers ) {
-		$headers['AppThemes ID'] = 'AppThemes ID';
-
-		return $headers;
 	}
 
 	function exclude_items( $r, $url ) {
