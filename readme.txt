@@ -1,8 +1,8 @@
 === AppThemes Updater ===
 Contributors: scribu, appthemes
 Tags: multisite, network, plugins, themes, updates
-Requires at least: 3.3
-Tested up to: 3.4
+Requires at least: 3.4
+Tested up to: 3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,7 +15,8 @@ from AppThemes.
 
 == Changelog ==
 
-= 1.1.3 =
+= 1.2 =
+* works with items from marketplace.appthemes.com
 * added "Check for updates now" button
 
 = 1.1.2 =
