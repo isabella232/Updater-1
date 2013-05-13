@@ -189,7 +189,7 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 		if ( isset( $themes_update->response[ $stylesheet ] ) ) {
 ?>
 				<div id="message" class="error">
-					<p><?php echo sprintf( __( '<strong>IMPORTANT</strong>: If you have made any modifications to the AppThemes files, they will be overwritten if you proceed with the automatic update. Those with modified theme files should do a manual update instead. Visit your <a href="%1$s" target="_blank">customer dashboard</a> to download the latest version.', 'appthemes' ), 'http://www.appthemes.com/cp/member.php' ); ?></p>
+					<p><?php echo sprintf( __( '<strong>IMPORTANT</strong>: If you have made any modifications to the AppThemes files, they will be overwritten if you proceed with the automatic update. Those with modified theme files should do a manual update instead. Visit your <a href="%1$s" target="_blank">customer dashboard</a> to download the latest version.', 'appthemes' ), 'https://my.appthemes.com/' ); ?></p>
 				</div>
 <?php
 		}
