@@ -2,7 +2,7 @@
 Contributors: scribu, appthemes
 Tags: multisite, network, plugins, themes, updates
 Requires at least: 3.4
-Tested up to: 3.6
+Tested up to: 3.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,6 +14,10 @@ With this plugin, you can receive automatic updates for themes and plugins
 from AppThemes.
 
 == Changelog ==
+
+= 1.3 =
+* fixed compatibility with WordPress 3.7
+* fixed not finding updates when only one theme is installed
 
 = 1.2.1 =
 * fixed not finding updates
