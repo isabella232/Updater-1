@@ -2,7 +2,7 @@
 /*
 Plugin Name: AppThemes Updater
 Description: Allows customers to automatically update AppThemes Products.
-Version: 1.2.1
+Version: 1.3
 Author: AppThemes
 Author URI: http://appthemes.com
 AppThemes ID: appthemes-updater

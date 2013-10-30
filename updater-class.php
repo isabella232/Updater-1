@@ -2,7 +2,6 @@
 
 abstract class APP_Upgrader {
 
-	protected $wp_url;
 	protected $app_url;
 
 	protected $items = array();
@@ -60,6 +59,7 @@ abstract class APP_Upgrader {
 			return false;
 
 		$body = unserialize( wp_remote_retrieve_body( $raw_response ) );
+
 		if ( !$body )
 			return false;
 
@@ -73,12 +73,40 @@ abstract class APP_Upgrader {
 
 		return $items;
 	}
+
+	protected function decode( $data, $version ) {
+		switch ( $version ) {
+			case 1.0:
+				return maybe_unserialize( $data );
+				break;
+			case 1.1:
+				return json_decode( $data, true );
+				break;
+			default:
+				return $data;
+				break;
+		}
+	}
+
+	protected function encode( $data, $version ) {
+		switch ( $version ) {
+			case 1.0:
+				return serialize( $data );
+				break;
+			case 1.1:
+				return json_encode( $data );
+				break;
+			default:
+				return $data;
+				break;
+		}
+	}
+
 }
 
 
 class APP_Theme_Upgrader extends APP_Upgrader {
 
-	protected $wp_url = 'http://api.wordpress.org/themes/update-check/';
 	protected $app_url = 'http://api.appthemes.com/themes/update-check/2.0/';
 
 	protected function get_hardcoded_items() {
@@ -96,15 +124,20 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 	}
 
 	function exclude_items( $r, $url ) {
-		if ( 0 === strpos( $url, $this->wp_url ) ) {
-			$themes = unserialize( $r['body']['themes'] );
+		if ( preg_match( '#://api\.wordpress\.org/themes/update-check/(?P<version>[0-9.]+)/#', $url, $matches ) ) {
+			$themes = $this->decode( $r['body']['themes'], floatval( $matches['version'] ) );
 
-			$this->current_theme = $themes['current_theme'];
+			if ( empty( $themes ) )
+				return $r;
+
+			$this->current_theme = ( $matches['version'] >= 1.1 ) ? $themes['active'] : $themes['current_theme'];
+
+			$themes_array = ( $matches['version'] >= 1.1 ) ? $themes['themes'] : $themes;
 
 			$themes_to_check = $this->get_marked_themes();
 
-			foreach ( $themes as $name => $info ) {
-				if ( is_string( $info ) )
+			foreach ( $themes_array as $name => $info ) {
+				if ( ! is_array( $info ) )
 					continue;
 
 				if ( !array_key_exists( $name, $themes_to_check ) )
@@ -114,10 +147,15 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 
 				$this->items[ $name ] = $info;
 
-				unset( $themes[ $name ] );
+				unset( $themes_array[ $name ] );
 			}
 
-			$r['body']['themes'] = serialize( $themes );
+			if ( $matches['version'] >= 1.1 )
+				$themes['themes'] = $themes_array;
+			else
+				$themes = $themes_array;
+
+			$r['body']['themes'] = $this->encode( $themes, floatval( $matches['version'] ) );
 		}
 
 		return $r;
@@ -158,16 +196,26 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 	}
 
 	function alter_update_requests( $response, $args, $url ) {
-		if ( 0 === strpos( $url, $this->wp_url ) ) {
+		if ( preg_match( '#://api\.wordpress\.org/themes/update-check/(?P<version>[0-9.]+)/#', $url, $matches ) ) {
 
 			$our_updates = $this->check_for_updates();
 
+			$themes = $this->decode( $response['body'], floatval( $matches['version'] ) );
+
 			if ( $our_updates ) {
-				$response['body'] = serialize( array_merge(
-					unserialize( $response['body'] ),
-					$our_updates
-				) );
+				if ( ! is_array( $themes ) )
+					$themes = array();
+
+				foreach ( $our_updates as $key => $value ) {
+					if ( $matches['version'] >= 1.1 )
+						$themes['themes'][ $key ] = $value;
+					else
+						$themes[ $key ] = $value;
+				}
+
+				$response['body'] = $this->encode( $themes, floatval( $matches['version'] ) );
 			}
+
 		}
 
 		return $response;
@@ -199,7 +247,6 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 
 class APP_Plugin_Upgrader extends APP_Upgrader {
 
-	protected $wp_url = 'http://api.wordpress.org/plugins/update-check/';
 	protected $app_url = 'http://api.appthemes.com/plugins/update-check/1.0/';
 
 	public static $instance;
@@ -211,40 +258,45 @@ class APP_Plugin_Upgrader extends APP_Upgrader {
 	}
 
 	function exclude_items( $r, $url ) {
-		if ( 0 === strpos( $url, $this->wp_url ) ) {
-			$payload = unserialize( $r['body']['plugins'] );
+		if ( preg_match( '#://api\.wordpress\.org/plugins/update-check/(?P<version>[0-9.]+)/#', $url, $matches ) ) {
+			$plugins = (array) $this->decode( $r['body']['plugins'], floatval( $matches['version'] ) );
 
-			if ( !$payload )
-				return;
+			if ( empty( $plugins ) )
+				return $r;
 
-			foreach ( $payload->plugins as $slug => $info ) {
-				if ( '' == $info['AppThemes ID'] )
+			foreach ( $plugins['plugins'] as $slug => $info ) {
+				if ( empty( $info['AppThemes ID'] ) )
 					continue;
 
 				$this->items[ $slug ] = $info;
 
-				unset( $payload->plugins[ $slug ] );
+				unset( $plugins['plugins'][ $slug ] );
 			}
 
-			$r['body']['plugins'] = serialize( $payload );
+			if ( $matches['version'] < 1.1 )
+				$plugins = (object) $plugins;
+
+			$r['body']['plugins'] = $this->encode( $plugins, floatval( $matches['version'] ) );
 		}
 
 		return $r;
 	}
 
 	function alter_update_requests( $response, $args, $url ) {
-		if ( 0 === strpos( $url, $this->wp_url ) ) {
+		if ( preg_match( '#://api\.wordpress\.org/plugins/update-check/(?P<version>[0-9.]+)/#', $url, $matches ) ) {
 
 			$our_updates = $this->check_for_updates();
 
-			$payload = unserialize( $response['body'] );
-
+			$plugins = $this->decode( $response['body'], floatval( $matches['version'] ) );
 			if ( $our_updates ) {
 				foreach ( $our_updates as $key => $value ) {
-					$payload[ $key ] = (object) $value;
+					if ( $matches['version'] >= 1.1 )
+						$plugins['plugins'][ $key ] = $value;
+					else
+						$plugins[ $key ] = (object) $value;
 				}
 
-				$response['body'] = serialize( $payload );
+				$response['body'] = $this->encode( $plugins, floatval( $matches['version'] ) );
 			}
 		}
 
