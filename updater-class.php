@@ -221,7 +221,7 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 		return $response;
 	}
 
-	function display_warning() {
+	public static function display_warning() {
 		global $pagenow;
 
 		if ( !in_array( $pagenow, array( 'themes.php', 'update-core.php' ) ) )
