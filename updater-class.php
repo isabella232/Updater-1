@@ -7,8 +7,9 @@ abstract class APP_Upgrader {
 	protected $items = array();
 
 	static function get_key() {
-		if ( defined( 'APPTHEMES_API_KEY' ) )
+		if ( defined( 'APPTHEMES_API_KEY' ) ) {
 			return APPTHEMES_API_KEY;
+		}
 
 		return get_site_option( 'appthemes_api_key' );
 	}
@@ -26,8 +27,9 @@ abstract class APP_Upgrader {
 	}
 
 	function __construct() {
-		if ( !self::get_key() )
+		if ( ! self::get_key() ) {
 			return;
+		}
 
 		add_action( 'init', array( __CLASS__, 'disable_old_updater' ) );
 
@@ -43,8 +45,9 @@ abstract class APP_Upgrader {
 
 	protected function check_for_updates() {
 		$payload = $this->get_payload();
-		if ( !$payload )
+		if ( ! $payload ) {
 			return false;
+		}
 
 		$args = array();
 		$args['timeout'] = 30;
@@ -55,13 +58,15 @@ abstract class APP_Upgrader {
 
 		$raw_response = wp_remote_post( $this->app_url, $args );
 
-		if ( is_wp_error( $raw_response ) || 200 != wp_remote_retrieve_response_code( $raw_response ) )
+		if ( is_wp_error( $raw_response ) || 200 != wp_remote_retrieve_response_code( $raw_response ) ) {
 			return false;
+		}
 
 		$body = unserialize( wp_remote_retrieve_body( $raw_response ) );
 
-		if ( !$body )
+		if ( ! $body ) {
 			return false;
+		}
 
 		return $this->append_api_key( $body );
 	}
@@ -127,8 +132,9 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 		if ( preg_match( '#://api\.wordpress\.org/themes/update-check/(?P<version>[0-9.]+)/#', $url, $matches ) ) {
 			$themes = $this->decode( $r['body']['themes'], floatval( $matches['version'] ) );
 
-			if ( empty( $themes ) )
+			if ( empty( $themes ) ) {
 				return $r;
+			}
 
 			$this->current_theme = ( $matches['version'] >= 1.1 ) ? $themes['active'] : $themes['current_theme'];
 
@@ -137,11 +143,13 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 			$themes_to_check = $this->get_marked_themes();
 
 			foreach ( $themes_array as $name => $info ) {
-				if ( ! is_array( $info ) )
+				if ( ! is_array( $info ) ) {
 					continue;
+				}
 
-				if ( !array_key_exists( $name, $themes_to_check ) )
+				if ( ! array_key_exists( $name, $themes_to_check ) ) {
 					continue;
+				}
 
 				$info['AppThemes ID'] = $themes_to_check[ $name ];
 
@@ -150,10 +158,11 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 				unset( $themes_array[ $name ] );
 			}
 
-			if ( $matches['version'] >= 1.1 )
+			if ( $matches['version'] >= 1.1 ) {
 				$themes['themes'] = $themes_array;
-			else
+			} else {
 				$themes = $themes_array;
+			}
 
 			$r['body']['themes'] = $this->encode( $themes, floatval( $matches['version'] ) );
 		}
@@ -168,26 +177,29 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 	 * @return array( 'theme-slug' => 'AppThemes ID-slug' )
 	 */
 	protected function get_marked_themes() {
-		if ( !function_exists( 'wp_get_themes' ) )
+		if ( ! function_exists( 'wp_get_themes' ) ) {
 			return array();
+		}
 
 		$hardcoded = $this->get_hardcoded_items();
 
 		$marked = array();
 
 		foreach ( wp_get_themes() as $key => $theme ) {
-			if ( in_array( $key, $hardcoded ) )
+			if ( in_array( $key, $hardcoded ) ) {
 				$marked[ $key ] = $key;
-			elseif ( $theme->get( 'AppThemes ID' ) )
+			} else if ( $theme->get( 'AppThemes ID' ) ) {
 				$marked[ $key ] = $theme->get( 'AppThemes ID' );
+			}
 		}
 
 		return $marked;
 	}
 
 	function get_payload() {
-		if ( empty( $this->items ) )
+		if ( empty( $this->items ) ) {
 			return false;
+		}
 
 		return array(
 			'themes' => $this->items,
@@ -203,14 +215,16 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 			$themes = $this->decode( $response['body'], floatval( $matches['version'] ) );
 
 			if ( $our_updates ) {
-				if ( ! is_array( $themes ) )
+				if ( ! is_array( $themes ) ) {
 					$themes = array();
+				}
 
 				foreach ( $our_updates as $key => $value ) {
-					if ( $matches['version'] >= 1.1 )
+					if ( $matches['version'] >= 1.1 ) {
 						$themes['themes'][ $key ] = $value;
-					else
+					} else {
 						$themes[ $key ] = $value;
+					}
 				}
 
 				$response['body'] = $this->encode( $themes, floatval( $matches['version'] ) );
@@ -224,11 +238,13 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 	public static function display_warning() {
 		global $pagenow;
 
-		if ( !in_array( $pagenow, array( 'themes.php', 'update-core.php' ) ) )
+		if ( ! in_array( $pagenow, array( 'themes.php', 'update-core.php' ) ) ) {
 			return;
+		}
 
-		if ( !current_user_can( 'update_themes' ) )
+		if ( ! current_user_can( 'update_themes' ) ) {
 			return;
+		}
 
 		$themes_update = get_site_transient( 'update_themes' );
 
@@ -237,7 +253,7 @@ class APP_Theme_Upgrader extends APP_Upgrader {
 		if ( isset( $themes_update->response[ $stylesheet ] ) ) {
 ?>
 				<div id="message" class="error">
-					<p><?php echo sprintf( __( '<strong>IMPORTANT</strong>: If you have made any modifications to the AppThemes files, they will be overwritten if you proceed with the automatic update. Those with modified theme files should do a manual update instead. Visit your <a href="%1$s" target="_blank">customer dashboard</a> to download the latest version.', 'appthemes' ), 'https://my.appthemes.com/' ); ?></p>
+					<p><?php echo sprintf( __( '<strong>IMPORTANT</strong>: If you have made any modifications to the AppThemes files, they will be overwritten if you proceed with the automatic update. Those with modified theme files should do a manual update instead. Visit your <a href="%1$s" target="_blank">customer dashboard</a> to download the latest version.', 'appthemes-updater' ), 'https://my.appthemes.com/' ); ?></p>
 				</div>
 <?php
 		}
@@ -261,20 +277,23 @@ class APP_Plugin_Upgrader extends APP_Upgrader {
 		if ( preg_match( '#://api\.wordpress\.org/plugins/update-check/(?P<version>[0-9.]+)/#', $url, $matches ) ) {
 			$plugins = (array) $this->decode( $r['body']['plugins'], floatval( $matches['version'] ) );
 
-			if ( empty( $plugins ) )
+			if ( empty( $plugins ) ) {
 				return $r;
+			}
 
 			foreach ( $plugins['plugins'] as $slug => $info ) {
-				if ( empty( $info['AppThemes ID'] ) )
+				if ( empty( $info['AppThemes ID'] ) ) {
 					continue;
+				}
 
 				$this->items[ $slug ] = $info;
 
 				unset( $plugins['plugins'][ $slug ] );
 			}
 
-			if ( $matches['version'] < 1.1 )
+			if ( $matches['version'] < 1.1 ) {
 				$plugins = (object) $plugins;
+			}
 
 			$r['body']['plugins'] = $this->encode( $plugins, floatval( $matches['version'] ) );
 		}
@@ -290,10 +309,11 @@ class APP_Plugin_Upgrader extends APP_Upgrader {
 			$plugins = $this->decode( $response['body'], floatval( $matches['version'] ) );
 			if ( $our_updates ) {
 				foreach ( $our_updates as $key => $value ) {
-					if ( $matches['version'] >= 1.1 )
+					if ( $matches['version'] >= 1.1 ) {
 						$plugins['plugins'][ $key ] = $value;
-					else
+					} else {
 						$plugins[ $key ] = (object) $value;
+					}
 				}
 
 				$response['body'] = $this->encode( $plugins, floatval( $matches['version'] ) );

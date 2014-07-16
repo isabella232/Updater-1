@@ -11,8 +11,9 @@ Text Domain: appthemes-updater
 */
 
 function is_app_updater_network_activated() {
-	if ( !is_multisite() )
+	if ( ! is_multisite() ) {
 		return false;
+	}
 
 	$plugins = get_site_option( 'active_sitewide_plugins' );
 
@@ -44,16 +45,17 @@ function app_updater_init() {
 	$locale = apply_filters( 'plugin_locale', get_locale(), 'appthemes-updater' );
 	load_textdomain( 'appthemes-updater', WP_LANG_DIR . "/plugins/appthemes-updater-$locale.mo" );
 
-	require dirname( __FILE__ ) . '/updater-class.php';
-	require dirname( __FILE__ ) . '/updater-ui.php';
+	require_once( dirname( __FILE__ ) . '/updater-class.php' );
+	require_once( dirname( __FILE__ ) . '/updater-ui.php' );
 
 	new APP_Theme_Upgrader;
 	new APP_Plugin_Upgrader;
 
-	if ( is_app_updater_network_activated() )
+	if ( is_app_updater_network_activated() ) {
 		$app_updater = new APP_Upgrader_Network;
-	else
+	} else {
 		$app_updater = new APP_Upgrader_Regular;
+	}
 }
 
 if ( is_admin() ) {

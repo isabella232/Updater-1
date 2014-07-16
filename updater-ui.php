@@ -7,25 +7,28 @@ abstract class APP_Upgrader_UI {
 	abstract protected function get_admin_url();
 
 	protected function maybe_set_key() {
-		if ( !isset( $_POST['appthemes_submit'] ) )
+		if ( ! isset( $_POST['appthemes_submit'] ) ) {
 			return;
+		}
 
 		APP_Upgrader::set_key( trim( $_POST['appthemes_key'] ) );
 
 		echo "
 			<div class='updated fade'><p>"
-			. __( 'Saved Changes.', 'app-updater' )
+			. __( 'Saved Changes.', 'appthemes-updater' )
 			. "</p></div>";
 	}
 
 	function show_notice() {
 		self::maybe_set_key();
 
-		if ( APP_Upgrader::get_key() )
+		if ( APP_Upgrader::get_key() ) {
 			return;
+		}
 
-		if ( !$this->can_set_key() )
+		if ( ! $this->can_set_key() ) {
 			return;
+		}
 
 		self::render( 'api-key-notice.php', array(
 			'admin_url' => $this->get_admin_url()
@@ -35,8 +38,9 @@ abstract class APP_Upgrader_UI {
 	function render_page() {
 		self::render( 'admin-page.php' );
 
-		if ( APP_Upgrader::get_key() )
+		if ( APP_Upgrader::get_key() ) {
 			self::render( 'check-for-updates.php' );
+		}
 	}
 
 	private static function render( $path, $vars = array() ) {
