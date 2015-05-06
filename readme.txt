@@ -2,7 +2,6 @@
 Contributors: scribu, appthemes
 Tags: multisite, network, plugins, themes, updates
 Requires at least: 3.4
-Tested up to: 3.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
