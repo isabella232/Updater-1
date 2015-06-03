@@ -1,16 +1,68 @@
 === AppThemes Updater ===
-Contributors: scribu, appthemes
-Tags: multisite, network, plugins, themes, updates
+Contributors: appthemes, scribu
+Tags: appthemes, multisite, network, plugins, themes, updates
 Requires at least: 3.4
+Tested up to: 4.2.1
+Stable tag: 1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Automatic updates for AppThemes products.
+Enables automatic updates for AppThemes products or items from our Marketplace.
 
 == Description ==
 
-With this plugin, you can receive automatic updates for themes and plugins
-from AppThemes.
+The AppThemes Updater allows you to receive notifications of new product versions and automatically update them directly from within WordPress.
+
+= Reporting Bugs & Contributing =
+
+If you find a bug or are a developer and would like to contribute, please do so via GitHub: [https://github.com/AppThemes/Updater](https://github.com/AppThemes/Updater). We accept pull requests and appreciate bug reports.
+
+
+== Installation ==
+
+= Automatic Installation =
+
+This is by far the easiest way to as WordPress handles the file transfers itself and you don't even need to leave your web browser.
+
+1. Log in to your WordPress admin area.
+2. Navigate to the "Plugins" sidebar menu section and click "Add New".
+3. In the search field type, "AppThemes Updater" and click "Search Plugins".
+4. Once you've found the plugin, click the "Install Now" button.
+5. After it installs, click on the "Activate Plugin" link.
+
+
+= Manual installation =
+
+This requires you to manually download the plugin to your local machine and then upload it directly to your web server via SFTP. This method is not recommended.
+
+1. Download the plugin file to your computer and unzip it (using WinZip for PC or for Mac, the Archive Utility).
+2. Use an SFTP program (or your hosting control panel) to upload the unzipped plugin folder to your WordPress installation's `wp-content/plugins/` directory.
+3. Activate the plugin from the "Plugins" sidebar menu section within the WordPress admin.
+
+= Getting started =
+
+Now that the plugin is active, follow the instructions on the top of the page. It'll guide you on how to obtain and enter your AppThemes API key. Once that's completed, you'll be notified whenever an update is available via the standard WordPress notification system (plugins or themes page).
+
+
+== Frequently Asked Questions ==
+
+= Where can I find my AppThemes API key? =
+
+Log in to your [AppThemes account](https://my.appthemes.com/api-key/) and download from there.
+
+= Can I have more than one API key? =
+
+Not at this time.
+
+= Do I need an AppThemes account? =
+
+Yes. Accounts are free but you must purchase a product (or renew your subscription) before the AppThemes Updater plugin will work.
+
+
+== Screenshots ==
+
+1. Enter your API key screen
+
 
 == Changelog ==
 
@@ -38,3 +90,12 @@ from AppThemes.
 
 = 1.0 =
 * initial release
+
+
+== Upgrade Notice ==
+
+= 1.3 =
+This version fixes a compatibility issue with WordPress 3.7. Please upgrade immediately.
+
+= 1.2 =
+This version now works with items from our Marketplace. Please upgrade immediately.
