@@ -1,13 +1,14 @@
 <?php
 /*
-Plugin Name: AppThemes Updater
-Description: Automatically notifies you when AppThemes and Marketplace product updates are available.
-Version: 1.4.0
-Author: AppThemes
-Author URI: https://www.appthemes.com
-AppThemes ID: appthemes-updater
-Network: true
-Text Domain: appthemes-updater
+ * Plugin Name: AppThemes Updater
+ * Description: Automatically notifies you when AppThemes and Marketplace product updates are available.
+ * Version: 1.4.0
+ * Author: AppThemes
+ * Author URI: https://www.appthemes.com
+ * AppThemes ID: appthemes-updater
+ * Network: true
+ * Text Domain: appthemes-updater
+ * Domain Path: /languages
 */
 
 function is_app_updater_network_activated() {
@@ -42,8 +43,6 @@ function app_extra_headers( $headers ) {
 }
 
 function app_updater_init() {
-	$locale = apply_filters( 'plugin_locale', get_locale(), 'appthemes-updater' );
-	load_textdomain( 'appthemes-updater', WP_LANG_DIR . "/plugins/appthemes-updater-$locale.mo" );
 
 	require_once( dirname( __FILE__ ) . '/updater-class.php' );
 	require_once( dirname( __FILE__ ) . '/updater-ui.php' );
