@@ -64,7 +64,7 @@ class APP_Upgrader_Regular extends APP_Upgrader_UI {
 	}
 
 	protected function get_admin_url() {
-		return admin_url( 'admin.php?page=appthemes-key-config' );
+		return admin_url( 'options-general.php?page=appthemes-key-config' );
 	}
 
 	function init_page() {
