@@ -50,7 +50,6 @@ abstract class APP_Upgrader_UI {
 	}
 }
 
-
 class APP_Upgrader_Regular extends APP_Upgrader_UI {
 
 	function __construct() {
@@ -65,27 +64,6 @@ class APP_Upgrader_Regular extends APP_Upgrader_UI {
 
 	protected function get_admin_url() {
 		return admin_url( 'options-general.php?page=appthemes-key-config' );
-	}
-
-	function init_page() {
-		add_options_page( esc_html__( 'AppThemes Updater', 'appthemes-updater' ), esc_html__( 'AppThemes Updater', 'appthemes-updater' ), 'manage_options', 'appthemes-key-config', array( $this, 'render_page' ) );
-	}
-}
-
-class APP_Upgrader_Network extends APP_Upgrader_UI {
-
-	function __construct() {
-		add_action( 'all_admin_notices', array( $this, 'show_notice' ) );
-
-		add_action( 'network_admin_menu', array( $this, 'init_page' ) );
-	}
-
-	protected function can_set_key() {
-		return is_super_admin();
-	}
-
-	protected function get_admin_url() {
-		return network_admin_url( 'settings.php?page=appthemes-key-config' );
 	}
 
 	function init_page() {

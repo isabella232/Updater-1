@@ -11,16 +11,6 @@
  * Domain Path: /languages
 */
 
-function is_app_updater_network_activated() {
-	if ( ! is_multisite() ) {
-		return false;
-	}
-
-	$plugins = get_site_option( 'active_sitewide_plugins' );
-
-	return isset( $plugins[ plugin_basename( __FILE__ ) ] );
-}
-
 function app_updater_activate() {
 	app_refresh_themes();
 	app_refresh_plugins();
@@ -49,12 +39,7 @@ function app_updater_init() {
 
 	new APP_Theme_Upgrader;
 	new APP_Plugin_Upgrader;
-
-	if ( is_app_updater_network_activated() ) {
-		$app_updater = new APP_Upgrader_Network;
-	} else {
-		$app_updater = new APP_Upgrader_Regular;
-	}
+	new APP_Upgrader_Regular;
 }
 
 if ( is_admin() ) {
