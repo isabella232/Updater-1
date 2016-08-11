@@ -2,8 +2,8 @@
 Contributors: appthemes, scribu
 Tags: appthemes, multisite, network, plugins, themes, updates
 Requires at least: 3.4
-Tested up to: 4.2.1
-Stable tag: 1.3
+Tested up to: 4.6
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,12 @@ Yes. Accounts are free but you must purchase a product (or renew your subscripti
 
 
 == Changelog ==
+
+= 1.4.0 =
+*Released - Aug 18 2016*
+
+* added plugin action links to the settings, docs, and support pages
+* moved the options page where is belongs under the settings menu
 
 = 1.3 =
 * fixed compatibility with WordPress 3.7

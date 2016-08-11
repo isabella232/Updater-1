@@ -1,16 +1,33 @@
-<form method="post" action="">
+<div class="wrap narrow">
 
-<h3><?php _e( 'AppThemes API Key', 'appthemes-updater' ); ?></h3>
+	<h2 class="title"><?php _e( 'AppThemes Updater Settings', 'appthemes-updater' ); ?></h2>
 
-<p><?php printf(
-	__( 'Copy the key found at %1$s and paste it in the field below:', 'appthemes-updater' ),
-	'<a href="https://my.appthemes.com/api-key/" target="_blank">my.appthemes.com/api-key/</a>'
-); ?></p>
+	<p><?php printf(
+		__( 'Enter your unique API key. This can be found within your <a href="%1$s" target="_blank">AppThemes customer account</a>.', 'appthemes-updater' ),
+		'https://my.appthemes.com/api-key/'
+	); ?></p>
 
-<p>
-<input type="text" class="regular-text" name="appthemes_key" value="<?php echo esc_attr( APP_Upgrader::get_key() ); ?>" />
+	<form method="post" action="">
 
-<input type="submit" class="button-primary" name="appthemes_submit" value="<?php esc_attr_e( 'Save', 'appthemes-updater' ); ?>" />
-</p>
+		<table class="form-table">
+			<tbody>
+				<tr>
+					<th valign="top" scope="row">
+						<label for="appthemes_key"><?php _e( 'API Key:', 'appthemes-updater' ); ?></label>
+					</th>
+					<td>
+						<input type="text" class="regular-text code" name="appthemes_key" value="<?php echo esc_attr( APP_Upgrader::get_key() ); ?>">
+					</td>
+				</tr>
+			</tbody>
+		</table>
 
-</form>
+		<p class="submit">
+			<input type="submit" class="button-primary" name="appthemes_submit" value="<?php esc_attr_e( 'Save Settings', 'appthemes-updater' ); ?>" />
+		</p>
+
+	</form>
+
+</div>
+
+<div class="clear"></div>

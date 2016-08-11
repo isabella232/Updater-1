@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: AppThemes Updater
-Description: Allows customers to automatically update AppThemes Products.
-Version: 1.3
+Description: Automatically notifies you when AppThemes and Marketplace product updates are available.
+Version: 1.4.0
 Author: AppThemes
-Author URI: http://appthemes.com
+Author URI: https://www.appthemes.com
 AppThemes ID: appthemes-updater
 Network: true
 Text Domain: appthemes-updater
@@ -71,3 +71,20 @@ if ( is_admin() ) {
 	register_activation_hook( __FILE__, 'app_updater_activate' );
 }
 
+
+/**
+ * Adds plugin action links.
+ *
+ * @since 1.4.0
+ */
+function app_updater_action_links( $links ) {
+
+	$plugin_links = array(
+		'<a href="' . esc_url( get_admin_url( null, 'options-general.php?page=appthemes-key-config' ) ) . '">' . __( 'Settings', 'appthemes-updater' ) . '</a>',
+		'<a href="https://docs.appthemes.com/tutorials/installing-the-appthemes-updater-plugin/" target="_blank">' . __( 'Docs', 'appthemes-updater' ) . '</a>',
+		'<a href="http://forums.appthemes.com/appthemes-updater-plugin/" target="_blank">' . __( 'Support', 'appthemes-updater' ) . '</a>',
+	);
+
+	return array_merge( $plugin_links, $links );
+}
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'app_updater_action_links' );
