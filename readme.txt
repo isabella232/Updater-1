@@ -73,6 +73,7 @@ Yes. Accounts are free but you must purchase a product (or renew your subscripti
 * moved the options page where is belongs under the settings menu
 * moved the .pot language file into it's own /languages dir
 * removed multisite options page to follow best practices. set options on each site
+* don't require that plugin be multisite network activated only
 
 = 1.3 =
 * fixed compatibility with WordPress 3.7

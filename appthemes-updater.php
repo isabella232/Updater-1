@@ -6,7 +6,6 @@
  * Author: AppThemes
  * Author URI: https://www.appthemes.com
  * AppThemes ID: appthemes-updater
- * Network: true
  * Text Domain: appthemes-updater
  * Domain Path: /languages
 */
