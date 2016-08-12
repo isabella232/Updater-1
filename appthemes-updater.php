@@ -54,6 +54,31 @@ if ( is_admin() ) {
 	register_activation_hook( __FILE__, 'app_updater_activate' );
 }
 
+/**
+ * Load the localization files.
+ *
+ * @since 1.4.0
+ *
+ * Note: the first-loaded translation file overrides any following ones if the same translation is present.
+ *
+ * Locales found in (unless WP_LANG_DIR is defined differently in wp-config.php:
+ *   - wp-content/languages/appthemes-updater/appthemes-updater-LOCALE.mo
+ *   - wp-content/languages/plugins/appthemes-updater-LOCALE.mo
+ */
+function app_updater_load_textdomain() {
+
+	$domain = 'appthemes-updater';
+
+	// Load the locale (e.g. de_DE) based on the WordPress site language set (wp-admin => Settings => General).
+	$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
+
+	// Load any custom .mo file first, if it's found.
+	load_textdomain( $domain, WP_LANG_DIR . '/' . $domain . '/' . $domain . '-' . $locale . '.mo' );
+
+	// Load the plugin's .mo file if it's found and no custom .mo file exists.
+	load_plugin_textdomain( $domain, false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
+}
+add_action( 'init', 'app_updater_load_textdomain' );
 
 /**
  * Adds plugin action links.
