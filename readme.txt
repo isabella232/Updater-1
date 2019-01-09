@@ -66,6 +66,11 @@ Yes. Accounts are free but you must purchase a product (or renew your subscripti
 
 == Changelog ==
 
+= 1.4.1 =
+*Released - Jan 09 2019*
+
+* Added Spanish translation
+
 = 1.4.0 =
 *Released - Aug 18 2016*
 

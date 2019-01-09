@@ -1,39 +1,35 @@
-# Copyright (C) 2016 AppThemes Updater
-# This file is distributed under the same license as the AppThemes Updater package.
 msgid ""
 msgstr ""
-"Project-Id-Version: AppThemes Updater 1.4.1\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/appthemes-"
 "updater\n"
 "POT-Creation-Date: 2019-01-09 12:17+0500\n"
+"PO-Revision-Date: 2019-01-09 12:39+0500\n"
+"Last-Translator: dikiy_forester <afrolov@appthemes.com>\n"
+"Language-Team: \n"
+"Language: es_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
-"_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
-"esc_html_x:1,2c\n"
-"X-Poedit-Basepath: ..\n"
 "X-Generator: Poedit 2.2\n"
-"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: appthemes-updater.php:91
 msgid "Settings"
-msgstr ""
+msgstr "Ajustes"
 
 #: appthemes-updater.php:92
 msgid "Docs"
-msgstr ""
+msgstr "Documentos"
 
 #: appthemes-updater.php:93
 msgid "Support"
-msgstr ""
+msgstr "Soporte"
 
 #: templates/admin-page.php:3
 msgid "AppThemes Updater Settings"
-msgstr ""
+msgstr "Ajustes del actualizador de AppThemes"
 
 #: templates/admin-page.php:6
 #, php-format
@@ -41,38 +37,44 @@ msgid ""
 "Enter your unique API key. This can be found within your <a href=\"%1$s\" "
 "target=\"_blank\">AppThemes customer account</a>."
 msgstr ""
+"Introduce tu clave de API única. Esto se puede encontrar dentro de tu <a "
+"href=\"%1$s\" target=\"_ blank\">cuenta de cliente de AppThemes</a>."
 
 #: templates/admin-page.php:16
 msgid "API Key:"
-msgstr ""
+msgstr "Clave de API:"
 
 #: templates/admin-page.php:26
 msgid "Save Settings"
-msgstr ""
+msgstr "Guardar ajustes"
 
 #: templates/api-key-notice.php:3
 msgid "The AppThemes Updater plugin is almost ready."
-msgstr ""
+msgstr "El plugin actualizador de AppThemes está casi listo."
 
 #: templates/api-key-notice.php:4
 #, php-format
 msgid ""
 "You must <a href=\"%1$s\">enter your API key</a> first before it will work."
 msgstr ""
+"Primero debes <a href=\"%1$s\">introducir tu clave de API</a> antes de que "
+"funcione."
 
 #: templates/check-for-updates.php:2
 msgid "Check for Latest Versions"
-msgstr ""
+msgstr "Comprobar si hay versiones más recientes"
 
 #: templates/check-for-updates.php:3
 msgid ""
 "Manually check for updates (includes WordPress core, themes, plugins, "
 "AppThemes and Marketplace products)."
 msgstr ""
+"Buscar actualizaciones manualmente (incluye el núcleo de WordPress, temas, "
+"plugins, AppThemes y productos de Marketplace)."
 
 #: templates/check-for-updates.php:4
 msgid "Check Now"
-msgstr ""
+msgstr "Comprobar ahora"
 
 #: updater-class.php:256
 #, php-format
@@ -83,27 +85,33 @@ msgid ""
 "Visit your <a href=\"%1$s\" target=\"_blank\">customer dashboard</a> to "
 "download the latest version."
 msgstr ""
+"<strong>IMPORTANTANTE</strong>: Si has realizado alguna modificación en los "
+"archivos de AppThemes, se sobrescribirán si continúas con la actualización "
+"automática. Aquellos con archivos de tema modificados deben hacer una "
+"actualización manual en su lugar. Visita el < a href=\"%1$s\" target=\"_ "
+"blank\">Panel de cliente</a> para descargar la última versión."
 
 #: updater-ui.php:18
 msgid "Saved Changes."
-msgstr ""
+msgstr "Guardar cambios."
 
-#. #-#-#-#-#  appthemes-updater.pot (AppThemes Updater 1.4.0)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: updater-ui.php:70
 msgid "AppThemes Updater"
-msgstr ""
+msgstr "Actualizador de AppThemes"
 
 #. Description of the plugin/theme
 msgid ""
 "Automatically notifies you when AppThemes and Marketplace product updates "
 "are available."
 msgstr ""
+"Te notifica automáticamente cuando las actualizaciones de los productos de "
+"AppThemes y Marketplace están disponibles."
 
 #. Author of the plugin/theme
 msgid "AppThemes"
-msgstr ""
+msgstr "AppThemes"
 
 #. Author URI of the plugin/theme
 msgid "https://www.appthemes.com"
-msgstr ""
+msgstr "https://www.appthemes.com"

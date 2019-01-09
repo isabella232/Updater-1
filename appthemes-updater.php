@@ -2,7 +2,7 @@
 /*
  * Plugin Name: AppThemes Updater
  * Description: Automatically notifies you when AppThemes and Marketplace product updates are available.
- * Version: 1.4.0
+ * Version: 1.4.1
  * Author: AppThemes
  * Author URI: https://www.appthemes.com
  * AppThemes ID: appthemes-updater
